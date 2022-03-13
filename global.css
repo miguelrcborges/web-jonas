@@ -3,10 +3,12 @@
 :root {
     --background: #2e3440;
     --foreground: #d8dee9; 
+    --green: #a3be8c;
+    --red: #bf616a;
+    --yellow: #ebcb8b;
 }
 
-
-body {
+body, #questions-container {
     background-color: var(--background);
     color: var(--foreground);
     font-family: 'JetBrains Mono', monospace;
@@ -28,11 +30,42 @@ body {
     border-radius: min(10vw , 1vh);
 
     transition: 200ms;
+
+    margin: 10px;
 }
 
 .option:hover {
+    cursor: not-allowed;
+}
+
+.option.active:hover {
     background-color: var(--foreground);
     color: var(--background);
 
     cursor: pointer;
+}
+
+.option.right {
+    background-color: var(--green);
+}
+
+.option.wrong {
+    background-color: var(--red);
+}
+
+.skip-question {
+    color: var(--yellow);
+    
+    border: 1px solid;
+    border-radius: 5px;
+
+    padding: 20px 20px;
+    margin: 50px 0px;
+
+    transition: 200ms;
+}
+
+.skip-question:hover {
+    background-color: var(--yellow);
+    color: var(--background);
 }
