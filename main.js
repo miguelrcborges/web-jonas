@@ -1,25 +1,35 @@
 let questions = [];
 const body = document.querySelector("#questions-container");
 
-fetch("perguntas/Web-Jonas - BQUI.csv").then(response => response.text()).then(data => startup(data));
+const courseSelect = document.querySelectorAll(".option");
 
-function startup(csv) {
-    csv = csv.split("\r\n");
-    let splittedCsv = [];
-    csv.forEach(string => splittedCsv.push(string.split(",")));
-    delete csv;
 
-    for (let i = 1; i < splittedCsv.length; i++) {
+function loadCourse() {
+    courseSelect.forEach(course => course.removeEventListener('click', loadCourse));
+    delete courseSelect;
+    fetch(`perguntas/Web-Jonas - ${this.dataset.course}.tsv`).then(response => response.text()).then(data => startup(data));
+}
+
+courseSelect.forEach(course => course.addEventListener('click', loadCourse));
+
+
+function startup(tsv) {
+    tsv = tsv.split("\r\n");
+    let splittedTsv = [];
+    tsv.forEach(string => splittedTsv.push(string.split("\t")));
+    delete tsv;
+
+    for (let i = 1; i < splittedTsv.length; i++) {
         let question = {};
 
-        for (let ii = 0; ii < splittedCsv[0].length; ii++ ) {
-            question[splittedCsv[0][ii]] = splittedCsv[i][ii]; 
+        for (let ii = 0; ii < splittedTsv[0].length; ii++ ) {
+            question[splittedTsv[0][ii]] = splittedTsv[i][ii]; 
         }
 
         questions.push(question);
     }
 
-    delete splittedCsv;
+    delete splittedTsv;
     loadQuestions();
 }
 
