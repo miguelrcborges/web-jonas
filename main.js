@@ -2,7 +2,9 @@ let questions = [];
 const body = document.querySelector("#questions-container");
 
 const courseSelect = document.querySelectorAll(".option");
-
+let lastQuestion = "Ainda não respondeste a nada entrojão";
+let currentQuestion = "Ainda nem começaste lol";
+let toAnswer;
 
 function loadCourse() {
     courseSelect.forEach(course => course.removeEventListener('click', loadCourse));
@@ -29,12 +31,19 @@ function startup(tsv) {
         questions.push(question);
     }
 
+    toAnswer = Array.from(Array(questions.length).keys());
+
     delete splittedTsv;
     loadQuestions();
 }
 
 function loadQuestions() {
-    let question = questions[Math.floor(Math.random() * questions.length)]; 
+    lastQuestion = currentQuestion;
+
+    let toAnswerIndex = Math.floor(Math.random() * toAnswer.length);
+    let index = toAnswer[toAnswerIndex];
+    toAnswer.splice(toAnswerIndex, 1);
+    let question = questions[index]; 
 
     let questionText = document.createElement('h1');
     questionText.textContent =  question["Pergunta"];
@@ -65,6 +74,9 @@ function loadQuestions() {
     body.replaceChildren(questionText, ...options);
 
     document.querySelector(".skip-question").addEventListener('click', loadQuestions);
+    currentQuestion = question;
+
+    if (!toAnswer.length) toAnswer = Array.from(Array(questions.length).keys());
 }
 
 function clickHandler(event) {
